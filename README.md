@@ -4,7 +4,7 @@ Automatically enlarges Japanese font on the WaniKani website. Press 'u' to enlar
 
 I created this user script to make it easier to see the intricate details of unfamiliar kanji on low resolution screens.
 
-Feel free to use and edit this script locally. The script's default font size for Japanese text is 28px, but can easily be changed by editing the code.
+Feel free to use and edit this script locally. The script's default font size for Japanese text can easily be changed by editing the code.
 
 ## Optional Browser Extensions
 
