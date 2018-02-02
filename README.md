@@ -2,7 +2,7 @@
 
 Automatically enlarges Japanese font on the WaniKani website. Press 'u' to enlarge Japanese font even more.
 
-Click [here](INFO.md) for more info.
+[More Info](INFO.md)
 
 ## Screenshots
 
