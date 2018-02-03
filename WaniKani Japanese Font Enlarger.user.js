@@ -104,7 +104,8 @@ function enlargeOnlyInnerMost(elem, fontSize) {
       classList.contains("radical-highlight") ||
       classList.contains("kanji-highlight") ||
       classList.contains("vocabulary-highlight") ||
-      classList.contains("reading-highlight")
+      classList.contains("reading-highlight") ||
+      classList.contains("highlight-reading")
     ) {
       return;
     }
