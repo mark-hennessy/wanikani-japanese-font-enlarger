@@ -2,7 +2,7 @@
 // @name          WaniKani Japanese Font Enlarger
 // @description   Automatically enlarges Japanese font on WaniKani. Press 'u' to enlarge Japanese font even more.
 // @author        konanji
-// @version       1.0.2
+// @version       1.0.3
 // @namespace     https://greasyfork.org/en/users/168746
 // @include       *.wanikani.com
 // @include       *.wanikani.com/level/*
@@ -110,10 +110,12 @@ function enlargeJapaneseText(fontSize) {
 }
 
 function enlargeJapaneseTextRecursive(element, fontSize) {
+  // Stop traversing if a text area is encountered.
   if (element.nodeName == "TEXTAREA") {
     return;
   }
 
+  // Stop traversing if an ignored CSS class is encountered.
   var classList = element.classList;
   if (classList) {
     for (var i = 0; i < cssClassesToIgnore.length; i++) {
@@ -123,46 +125,45 @@ function enlargeJapaneseTextRecursive(element, fontSize) {
     }
   }
 
+  // If there are child nodes, then recursively traverse the DOM.
   if (element.hasChildNodes()) {
     var childNodes = element.childNodes;
     for (var i = 0; i < childNodes.length; i++) {
-      // Recurse to traverse the DOM.
       enlargeJapaneseTextRecursive(childNodes[i], fontSize);
     }
-  } else {
-    // At this point the element is a text node or an empty element
-    var isElementNode = element.nodeType == 1;
-    if (isElementNode && element.textContent.length <= 1) {
-      if (
-        element.hasAttribute("value") &&
-        element.value.search(japaneseRegex) >= 0
-      ) {
-        element.style.fontSize = fontSize + "px";
-      }
 
+    return;
+  }
+
+  // At this point the element is either a text node or an empty element.
+  var isElementNode = element.nodeType == 1;
+  if (isElementNode && element.textContent.length <= 1) {
+    if (
+      element.hasAttribute("value") &&
+      element.value.search(japaneseRegex) >= 0
+    ) {
+      element.style.fontSize = fontSize + "px";
+    }
+
+    return;
+  }
+
+  var parent = element.parentNode;
+  var isTextNode = element.nodeType == 3;
+  if (isTextNode) {
+    // When comparing a string with a number, JavaScript will
+    // convert the string to a number when doing the comparison.
+    var currentFontSize = getStyleValue(parent, "font-size").replace("px", "");
+
+    // If the font is already bigger than the min font size, then there is nothing to do.
+    if (currentFontSize >= fontSize) {
       return;
     }
 
-    var parent = element.parentNode;
-    var isTextNode = element.nodeType == 3;
-    if (isTextNode) {
-      // When comparing a string with a number, JavaScript will
-      // convert the string to a number when doing the comparison.
-      var currentFontSize = getStyleValue(parent, "font-size").replace(
-        "px",
-        ""
-      );
-
-      // If the font is already bigger than the min font size, then there is nothing to do.
-      if (currentFontSize >= fontSize) {
-        return;
-      }
-
-      var onlyChild = parent.childNodes.length == 1;
-      if (onlyChild) {
-        // This is a node with only text in it, so it's safe to insert a child span.
-        parent.innerHTML = getEnlargedText(parent.innerHTML, fontSize);
-      }
+    var onlyChild = parent.childNodes.length == 1;
+    if (onlyChild) {
+      // This is a node with only text in it, so it's safe to insert a child span.
+      parent.innerHTML = getEnlargedText(parent.innerHTML, fontSize);
     }
   }
 }
