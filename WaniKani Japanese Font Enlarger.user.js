@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          WaniKani Japanese Font Enlarger
-// @description   Automatically enlarges Japanese font on WaniKani. Press 'u' to enlarge Japanese font even more.
+// @description   Automatically enlarges Japanese font on WaniKani. Press 'alt' + 'u' to enlarge Japanese font even more.
 // @author        konanji
 // @version       1.0.6
 // @namespace     https://greasyfork.org/en/users/168746

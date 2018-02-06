@@ -1,7 +1,6 @@
 # WaniKani Japanese Font Enlarger
 
-Automatically enlarges Japanese font on [WaniKani](https://www.wanikani.com).
-Press 'alt' + 'u' to enlarge Japanese font even more.
+Automatically enlarges Japanese font on [WaniKani](https://www.wanikani.com). Press 'alt' + 'u' to enlarge Japanese font even more.
 
 [More Info](INFO.md)
 
