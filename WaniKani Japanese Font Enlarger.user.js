@@ -139,8 +139,11 @@ function enlargeJapaneseTextRecursive(element, fontSize) {
     return;
   }
 
-  // At this point the element is either a text node or an empty element.
   var isElementNode = element.nodeType == 1;
+  var isTextNode = element.nodeType == 3;
+  var parent = element.parentNode;
+  var onlyChild = parent.childNodes.length == 1;
+
   if (isElementNode && element.textContent.length <= 1) {
     if (
       element.hasAttribute("value") &&
@@ -148,24 +151,12 @@ function enlargeJapaneseTextRecursive(element, fontSize) {
     ) {
       element.style.fontSize = fontSize + "px";
     }
-
-    return;
-  }
-
-  var parent = element.parentNode;
-  var isTextNode = element.nodeType == 3;
-  if (isTextNode) {
+  } else if (isTextNode && onlyChild) {
     // When comparing a string with a number, JavaScript will
     // convert the string to a number when doing the comparison.
     var currentFontSize = getStyleValue(parent, "font-size").replace("px", "");
 
-    // If the font is already bigger than the min font size, then there is nothing to do.
-    if (currentFontSize >= fontSize) {
-      return;
-    }
-
-    var onlyChild = parent.childNodes.length == 1;
-    if (onlyChild) {
+    if (fontSize > currentFontSize) {
       // This is a node with only text in it, so it's safe to insert a child span.
       parent.innerHTML = getEnlargedText(parent.innerHTML, fontSize);
     }
