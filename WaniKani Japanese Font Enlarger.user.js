@@ -2,7 +2,7 @@
 // @name          WaniKani Japanese Font Enlarger
 // @description   Automatically enlarges Japanese font on WaniKani. Press 'u' to enlarge Japanese font even more.
 // @author        konanji
-// @version       1.0.5
+// @version       1.0.6
 // @namespace     https://greasyfork.org/en/users/168746
 // @include       *.wanikani.com
 // @include       *.wanikani.com/level/*
@@ -95,7 +95,7 @@ function initKeyboardShortcuts() {
   document.addEventListener(
     "keydown",
     function(event) {
-      if (event.ctrlKey && event.keyCode == 85 /*u*/) {
+      if (event.altKey && event.keyCode == 85 /*u*/) {
         // If the search input field has focus do nothing
         var activeElement = document.activeElement;
         if (activeElement instanceof HTMLInputElement) {

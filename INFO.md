@@ -1,5 +1,5 @@
 Automatically enlarges Japanese font on WaniKani.
-Press 'ctrl' + 'u' to enlarge Japanese font even more.
+Press 'alt' + 'u' to enlarge Japanese font even more.
 
 I created this userscript to make it easier to see the intricate details of unfamiliar kanji on low resolution screens.
 
