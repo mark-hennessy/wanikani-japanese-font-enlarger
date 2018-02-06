@@ -103,13 +103,6 @@ function initKeyboardShortcuts() {
   );
 }
 
-function isFocusInTextAreaOrInput() {
-  if (activeElement && isTextBox(activeElement)) {
-  }
-
-  return false;
-}
-
 function enlargeJapaneseText(fontSize) {
   enlargeJapaneseTextRecursive(document.body, fontSize || defaultFontSize);
 }
