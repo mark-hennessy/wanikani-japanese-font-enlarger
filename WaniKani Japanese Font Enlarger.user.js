@@ -2,7 +2,7 @@
 // @name          WaniKani Japanese Font Enlarger
 // @description   Automatically enlarges Japanese font on WaniKani. Press 'alt' + 'u' to enlarge Japanese font even more.
 // @author        konanji
-// @version       1.0.6
+// @version       1.0.7
 // @namespace     https://greasyfork.org/en/users/168746
 // @include       *.wanikani.com
 // @include       *.wanikani.com/level/*
@@ -95,18 +95,23 @@ function initKeyboardShortcuts() {
   document.addEventListener(
     "keydown",
     function(event) {
-      if (event.altKey && event.keyCode == 85 /*u*/) {
-        // If the search input field has focus do nothing
-        var activeElement = document.activeElement;
-        if (activeElement instanceof HTMLInputElement) {
-          return;
-        }
-
+      if (
+        event.altKey &&
+        event.keyCode == 85 /*u*/ &&
+        !isTextBox(document.activeElement)
+      ) {
         enlargeJapaneseText(defaultFontSize * 2);
       }
     },
     false
   );
+}
+
+function isFocusInTextAreaOrInput() {
+  if (activeElement && isTextBox(activeElement)) {
+  }
+
+  return false;
 }
 
 function enlargeJapaneseText(fontSize) {
@@ -139,19 +144,11 @@ function enlargeJapaneseTextRecursive(element, fontSize) {
     return;
   }
 
-  var isElementNode = element.nodeType == 1;
   var isTextNode = element.nodeType == 3;
   var parent = element.parentNode;
   var onlyChild = parent.childNodes.length == 1;
 
-  if (isElementNode && element.textContent.length <= 1) {
-    if (
-      element.hasAttribute("value") &&
-      element.value.search(japaneseRegex) >= 0
-    ) {
-      element.style.fontSize = fontSize + "px";
-    }
-  } else if (isTextNode && onlyChild) {
+  if (isTextNode && onlyChild) {
     // When comparing a string with a number, JavaScript will
     // convert the string to a number when doing the comparison.
     var currentFontSize = getStyleValue(parent, "font-size").replace("px", "");
@@ -205,4 +202,42 @@ function camelCase(inputString) {
   }
 
   return camelCasedString;
+}
+
+function isTextBox(element) {
+  if (!element) {
+    return false;
+  }
+
+  var tagName = element.tagName.toLowerCase();
+
+  if (tagName === "textarea") {
+    return true;
+  }
+
+  if (tagName === "input") {
+    var type = element.getAttribute("type").toLowerCase();
+
+    // If an input types is not supported by the browser,
+    // then it will behave as input type text.
+    var inputTypes = [
+      "text",
+      "password",
+      "number",
+      "email",
+      "tel",
+      "url",
+      "search",
+      "date",
+      "datetime",
+      "datetime-local",
+      "time",
+      "month",
+      "week"
+    ];
+
+    return inputTypes.indexOf(type) >= 0;
+  }
+
+  return false;
 }
