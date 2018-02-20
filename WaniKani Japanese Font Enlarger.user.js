@@ -2,7 +2,7 @@
 // @name          WaniKani Japanese Font Enlarger
 // @description   Automatically enlarges Japanese font on WaniKani. Press 'u' to enlarge Japanese font even more.
 // @author        konanji
-// @version       1.0.9
+// @version       1.0.10
 // @namespace     https://greasyfork.org/en/users/168746
 // @include       *.wanikani.com
 // @include       *.wanikani.com/level/*
@@ -86,7 +86,13 @@ function initKeyboardShortcuts() {
   document.addEventListener(
     "keydown",
     function(event) {
-      if (event.keyCode == 85 /*u*/ && !isTextBox(document.activeElement)) {
+      // Ignore keyboard shortcuts if a text box has keyboard or mouse focus.
+      if (isTextBox(document.activeElement)) {
+        return;
+      }
+
+      // Double enlarge Japanese text when the 'u' key is pressed.
+      if (event.keyCode == 85) {
         enlargeJapaneseText(defaultFontSize * 2);
       }
     },
@@ -99,8 +105,8 @@ function enlargeJapaneseText(fontSize) {
 }
 
 function enlargeJapaneseTextRecursive(element, fontSize) {
-  // Stop traversing if a text area is encountered.
-  if (element.nodeName == "TEXTAREA") {
+  // Don't enlarge text inside of text boxes.
+  if (isTextBox(element)) {
     return;
   }
 
@@ -114,7 +120,7 @@ function enlargeJapaneseTextRecursive(element, fontSize) {
     }
   }
 
-  // If there are child nodes, then recursively traverse the DOM.
+  // If there are child nodes, then recurse.
   if (element.hasChildNodes()) {
     var childNodes = element.childNodes;
     for (var i = 0; i < childNodes.length; i++) {
