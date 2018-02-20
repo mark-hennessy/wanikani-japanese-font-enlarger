@@ -2,7 +2,7 @@
 // @name          WaniKani Japanese Font Enlarger
 // @description   Automatically enlarges Japanese font on WaniKani. Press 'u' to enlarge Japanese font even more.
 // @author        konanji
-// @version       1.0.10
+// @version       1.0.11
 // @namespace     https://greasyfork.org/en/users/168746
 // @include       *.wanikani.com
 // @include       *.wanikani.com/level/*
@@ -191,7 +191,7 @@ function camelCase(inputString) {
 }
 
 function isTextBox(element) {
-  if (!element) {
+  if (!element || !element.tagName) {
     return false;
   }
 
