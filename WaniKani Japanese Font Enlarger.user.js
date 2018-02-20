@@ -2,7 +2,7 @@
 // @name          WaniKani Japanese Font Enlarger
 // @description   Automatically enlarges Japanese font on WaniKani. Press 'u' to enlarge Japanese font even more.
 // @author        konanji
-// @version       1.0.8
+// @version       1.0.9
 // @namespace     https://greasyfork.org/en/users/168746
 // @include       *.wanikani.com
 // @include       *.wanikani.com/level/*
@@ -53,38 +53,29 @@ if (document.readyState === "complete") {
 }
 
 function init() {
-  initMutationListeners();
+  initMutationObservers();
   initKeyboardShortcuts();
   enlargeJapaneseText();
 }
 
-function initMutationListeners() {
+function initMutationObservers() {
   var url = document.URL;
   var isLesson = /\/lesson/.test(url);
   var isReview = /\/review/.test(url);
 
-  if (isLesson) {
-    var supplementNavHandler = function(mutations) {
-      enlargeJapaneseText();
-    };
+  var mutationCallback = function(mutations) {
+    enlargeJapaneseText();
+  };
 
-    new MutationObserver(supplementNavHandler).observe(
+  if (isLesson) {
+    new MutationObserver(mutationCallback).observe(
       document.getElementById("supplement-nav"),
       { attributes: true, subtree: true }
     );
   }
 
   if (isLesson || isReview) {
-    var itemInfoHandler = function(mutations) {
-      // The last one always has 2 mutations, so let's use that
-      if (mutations.length != 2) {
-        return;
-      }
-
-      enlargeJapaneseText();
-    };
-
-    new MutationObserver(itemInfoHandler).observe(
+    new MutationObserver(mutationCallback).observe(
       document.getElementById("item-info"),
       { attributes: true }
     );
